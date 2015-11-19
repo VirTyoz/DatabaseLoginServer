@@ -9,15 +9,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.thrift.TException;
 
+import database.pocket.ServerList;
+
 public class LoginServiceHandler implements LoginService.Iface{
-	private Connection loginServerDB;
+	//private Connection loginServerDB;
 	private Statement loginServerStmt;
 	private ResultSet loginServerRS;
 	public volatile ServerList serverList;
 	
 	private static final Logger logger = LogManager.getLogger(LoginServiceHandler.class);
 	public LoginServiceHandler(Connection loginServerDB) throws SQLException{
-		this.loginServerDB=loginServerDB;
+		//this.loginServerDB=loginServerDB;
 		loginServerStmt = loginServerDB.createStatement();
 		serverList =  new ServerList();
 	}
@@ -57,8 +59,6 @@ public class LoginServiceHandler implements LoginService.Iface{
 				serverList.serverAgeLimit = loginServerRS.getShort("age_limit");
 				serverList.serverType = loginServerRS.getShort("type");
 				serverList.serverOnlineLimit = loginServerRS.getShort("online_limit");
-				
-				logger.info("ServerList Ok");
 			}
 		} catch (Exception e) {
 			logger.catching(e);

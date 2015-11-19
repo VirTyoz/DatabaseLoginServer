@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package database.service;
+package database.pocket;
 
 import java.util.ArrayList;
 import java.util.BitSet;

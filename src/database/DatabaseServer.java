@@ -16,20 +16,17 @@ import database.service.LoginServiceHandler;
 public class DatabaseServer {
 	private static final Logger logger = LogManager.getLogger(DatabaseServer.class);
 	public static void main(String[] args){
-		
-		
 		try {
 			Connection loginServerDB = DriverManager.getConnection("jdbc:mysql://localhost:3306/LoginServer", "root", "***REMOVED***");
+			
 			LoginService.Processor<LoginServiceHandler> processor = new LoginService.Processor<LoginServiceHandler>(new LoginServiceHandler(loginServerDB));
 			TServerTransport serverTransport = new TServerSocket(6060);
-			//TServer server = new TSimpleServer(new Args(serverTransport).processor(processor));
 			TServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).
                     processor(processor));
 			server.serve();
 	
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info(e);
 		}
 	}
 
