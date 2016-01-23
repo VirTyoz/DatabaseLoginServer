@@ -12,14 +12,12 @@ import org.apache.thrift.TException;
 import database.pocket.ServerList;
 
 public class LoginServiceHandler implements LoginService.Iface{
-	//private Connection loginServerDB;
 	private Statement loginServerStmt;
 	private ResultSet loginServerRS;
 	public volatile ServerList serverList;
 	
 	private static final Logger logger = LogManager.getLogger(LoginServiceHandler.class);
 	public LoginServiceHandler(Connection loginServerDB) throws SQLException{
-		//this.loginServerDB=loginServerDB;
 		loginServerStmt = loginServerDB.createStatement();
 		serverList =  new ServerList();
 	}
@@ -30,15 +28,15 @@ public class LoginServiceHandler implements LoginService.Iface{
 			
 			loginServerRS = loginServerStmt.executeQuery("SELECT * FROM accounts WHERE login = '"+login+"'AND password = '"+password+"'");
 			
-			if(loginServerRS.next()){
+			if(loginServerRS.next()){ // true
 				
 				if(loginServerRS.getInt("accessLevel")!=-1){
-				status = 2;
+				status = 2; // OK
 				}else{
-					status = -1;
+					status = -1; //Block
 				}
 			}else{
-				status = 1;
+				status = 1; // Faild
 			}
 			}catch (Exception e) {
 				logger.catching(e);
@@ -48,17 +46,18 @@ public class LoginServiceHandler implements LoginService.Iface{
 	}
 
 	@Override
-	public ServerList serverList() throws TException {
+	public ServerList serverList(){
 		try {
-			loginServerRS = loginServerStmt.executeQuery("SELECT * FROM gameservers");
+			loginServerRS = loginServerStmt.executeQuery("SELECT * FROM game_servers");
 			
 			while(loginServerRS.next()){
-				serverList.id = 8;
+				serverList.id = loginServerRS.getShort("server_id");
 				serverList.serverIp = loginServerRS.getString("host");
 				serverList.serverPort = loginServerRS.getShort("port");
 				serverList.serverAgeLimit = loginServerRS.getShort("age_limit");
 				serverList.serverType = loginServerRS.getShort("type");
 				serverList.serverOnlineLimit = loginServerRS.getShort("online_limit");
+				
 			}
 		} catch (Exception e) {
 			logger.catching(e);

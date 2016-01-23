@@ -21,12 +21,12 @@ public class DatabaseServer {
 			
 			LoginService.Processor<LoginServiceHandler> processor = new LoginService.Processor<LoginServiceHandler>(new LoginServiceHandler(loginServerDB));
 			TServerTransport serverTransport = new TServerSocket(6060);
-			TServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).
-                    processor(processor));
+			TServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
+			logger.info("Login Service Start");
 			server.serve();
-	
+			
 		} catch (Exception e) {
-			logger.info(e);
+			logger.catching(e);
 		}
 	}
 
