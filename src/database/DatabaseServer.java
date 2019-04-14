@@ -17,7 +17,7 @@ public class DatabaseServer {
 	private static final Logger logger = LogManager.getLogger(DatabaseServer.class);
 	public static void main(String[] args){
 		try {
-			Connection loginServerDB = DriverManager.getConnection("jdbc:mysql://localhost:3306/LoginServer", "root", "***REMOVED***");
+			Connection loginServerDB = DriverManager.getConnection("jdbc:mysql://localhost:3306/LoginServer", "root", "");
 			
 			LoginService.Processor<LoginServiceHandler> processor = new LoginService.Processor<LoginServiceHandler>(new LoginServiceHandler(loginServerDB));
 			TServerTransport serverTransport = new TServerSocket(6060);
